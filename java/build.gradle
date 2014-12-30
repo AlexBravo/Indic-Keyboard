@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:support-v4:21.0.3'
     compile fileTree(dir: 'libs', include: '*.jar')
     // TODO: not working because xml files are not packed
     //compile project(':morelangs')
@@ -23,10 +23,10 @@ dependencies {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "20"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 14
         targetSdkVersion 19
     }
     sourceSets {
