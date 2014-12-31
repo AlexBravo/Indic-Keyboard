@@ -2439,7 +2439,9 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
             if (currentSettings.mCorrectionEnabled) {
                 final String separator = shouldAvoidSendingCode ? LastComposedWord.NOT_A_SEPARATOR
                         : StringUtils.newSingleCodePointString(primaryCode);
+
                 commitCurrentAutoCorrection(separator);
+             
                 didAutoCorrect = true;
             } else {
                 commitTyped(StringUtils.newSingleCodePointString(primaryCode));
@@ -3217,8 +3219,28 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     // Hooks for hardware keyboard
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-        if (!ProductionFlag.IS_HARDWARE_KEYBOARD_SUPPORTED)
+        //AB See if the user pressed a button to pick a suggestion.
+        final int SUGGESTION_KEY_NONE = -1;
+        final int SUGGESTION_KEY_LEFT = 1;
+        final int SUGGESTION_KEY_MIDDLE = 0;
+        final int SUGGESTION_KEY_RIGHT = 2;
+        int suggestionIndex = SUGGESTION_KEY_NONE;
+        if (keyCode == 145) {
+            suggestionIndex = SUGGESTION_KEY_LEFT;
+        } else if (keyCode == 146) {
+            suggestionIndex = SUGGESTION_KEY_MIDDLE;
+        } else if (keyCode == 147) {
+            suggestionIndex = SUGGESTION_KEY_RIGHT;
+        }
+        if (suggestionIndex != SUGGESTION_KEY_NONE) {
+            final SuggestedWordInfo wordInfo = mSuggestedWords.getInfo(suggestionIndex);
+            pickSuggestionManually(suggestionIndex, wordInfo);
+        }
+        //AB
+            
+        if (!ProductionFlag.IS_HARDWARE_KEYBOARD_SUPPORTED) {
             return super.onKeyDown(keyCode, event);
+        }
         // onHardwareKeyEvent, like onKeyDown returns true if it handled the event, false if
         // it doesn't know what to do with it and leave it to the application. For example,
         // hardware key events for adjusting the screen's brightness are passed as is.
