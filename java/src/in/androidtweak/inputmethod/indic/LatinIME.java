@@ -783,6 +783,10 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
                 mOptionsDialog.dismiss();
             }
         }
+        
+        if (conf.keyboard == Configuration.KEYBOARD_QWERTY) //AB ignore connection of a hardware keyboard
+            return;
+        
         PersonalizationDictionarySessionRegister.onConfigurationChanged(this, conf);
         super.onConfigurationChanged(conf);
     }
@@ -1304,6 +1308,26 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
             ResearchLogger.latinIME_onDisplayCompletions(applicationSpecifiedCompletions);
         }
     }
+
+    //AB
+    // return true or false based on whether input view should be shown in the current environment.
+    /**
+     * Override this to control when the soft input area should be shown to
+     * the user. The default implementation only shows the input view when
+     * there is no hard keyboard or the keyboard is hidden. If you change what
+     * this returns, you will need to call {@link #updateInputViewShown()}
+     * yourself whenever the returned value may have changed to have it
+     * re-evaluated and applied.
+     */
+    //@Override
+    public boolean onEvaluateInputViewShown() {
+        //Configuration config = getResources().getConfiguration();
+        //boolean show = config.keyboard == Configuration.KEYBOARD_NOKEYS ||
+        //        config.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES;
+        //return show;
+        return true;
+    }
+    //AB
 
     private void setSuggestionStripShownInternal(final boolean shown,
             final boolean needsInputViewShown) {
@@ -3193,7 +3217,8 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     // Hooks for hardware keyboard
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-        if (!ProductionFlag.IS_HARDWARE_KEYBOARD_SUPPORTED) return super.onKeyDown(keyCode, event);
+        if (!ProductionFlag.IS_HARDWARE_KEYBOARD_SUPPORTED)
+            return super.onKeyDown(keyCode, event);
         // onHardwareKeyEvent, like onKeyDown returns true if it handled the event, false if
         // it doesn't know what to do with it and leave it to the application. For example,
         // hardware key events for adjusting the screen's brightness are passed as is.
