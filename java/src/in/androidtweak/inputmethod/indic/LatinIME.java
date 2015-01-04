@@ -3219,22 +3219,170 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     // Hooks for hardware keyboard
     @Override
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-        //AB See if the user pressed a button to pick a suggestion.
-        final int SUGGESTION_KEY_NONE = -1;
-        final int SUGGESTION_KEY_LEFT = 1;
-        final int SUGGESTION_KEY_MIDDLE = 0;
-        final int SUGGESTION_KEY_RIGHT = 2;
-        int suggestionIndex = SUGGESTION_KEY_NONE;
-        if (keyCode == 145) {
-            suggestionIndex = SUGGESTION_KEY_LEFT;
-        } else if (keyCode == 146) {
-            suggestionIndex = SUGGESTION_KEY_MIDDLE;
-        } else if (keyCode == 147) {
-            suggestionIndex = SUGGESTION_KEY_RIGHT;
-        }
-        if (suggestionIndex != SUGGESTION_KEY_NONE) {
-            final SuggestedWordInfo wordInfo = mSuggestedWords.getInfo(suggestionIndex);
-            pickSuggestionManually(suggestionIndex, wordInfo);
+        //AB
+        int modifiers = event.getModifiers();
+        if ((modifiers & KeyEvent.META_ALT_RIGHT_ON) == KeyEvent.META_ALT_RIGHT_ON &&
+                (modifiers & KeyEvent.META_ALT_ON) == KeyEvent.META_ALT_ON) {
+
+            //AB See if the user pressed a button to pick a suggestion.
+            final int SUGGESTION_KEY_NONE = -1;
+            final int SUGGESTION_KEY_LEFT = 1;
+            final int SUGGESTION_KEY_MIDDLE = 0;
+            final int SUGGESTION_KEY_RIGHT = 2;
+            int suggestionIndex = SUGGESTION_KEY_NONE;
+            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+                suggestionIndex = SUGGESTION_KEY_LEFT;
+            } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+                suggestionIndex = SUGGESTION_KEY_MIDDLE;
+            } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                suggestionIndex = SUGGESTION_KEY_RIGHT;
+            }
+            if (suggestionIndex != SUGGESTION_KEY_NONE) {
+                // Make sure we have suggestions that exist
+                if (suggestionIndex < mSuggestedWords.size()) {
+                    final SuggestedWordInfo wordInfo = mSuggestedWords.getInfo(suggestionIndex);
+                    pickSuggestionManually(suggestionIndex, wordInfo);
+                }
+            } else {
+                switch (keyCode) {
+                    case KeyEvent.KEYCODE_A:
+                        sendMCC("ai", event); break;
+                    case KeyEvent.KEYCODE_B:
+                        sendMCC("al", event); break;
+                    case KeyEvent.KEYCODE_C:
+                        sendMCC("an", event); break;
+                    case KeyEvent.KEYCODE_D:
+                        sendMCC("and", event); break;
+                    case KeyEvent.KEYCODE_E:
+                        sendMCC("ant", event); break;
+                    case KeyEvent.KEYCODE_F:
+                        sendMCC("ar", event); break;
+                    case KeyEvent.KEYCODE_G:
+                        sendMCC("are", event); break;
+                    case KeyEvent.KEYCODE_H:
+                        sendMCC("as", event); break;
+                    case KeyEvent.KEYCODE_I:
+                        sendMCC("at", event); break;
+                    case KeyEvent.KEYCODE_J:
+                        sendMCC("be", event); break;
+                    case KeyEvent.KEYCODE_K:
+                        sendMCC("but", event); break;
+                    case KeyEvent.KEYCODE_L:
+                        sendMCC("by", event); break;
+                    case KeyEvent.KEYCODE_M:
+                        sendMCC("ch", event); break;
+                    case KeyEvent.KEYCODE_N:
+                        sendMCC("ck", event); break;
+                    case KeyEvent.KEYCODE_O:
+                        sendMCC("ea", event); break;
+                    case KeyEvent.KEYCODE_P:
+                        sendMCC("ed", event); break;
+                    case KeyEvent.KEYCODE_Q:
+                        sendMCC("en", event); break;
+                    case KeyEvent.KEYCODE_R:
+                        sendMCC("er", event); break;
+                    case KeyEvent.KEYCODE_S:
+                        sendMCC("es", event); break;
+                    case KeyEvent.KEYCODE_T:
+                        sendMCC("et", event); break;
+                    case KeyEvent.KEYCODE_U:
+                        sendMCC("ex", event); break;
+                    case KeyEvent.KEYCODE_V:
+                        sendMCC("for", event); break;
+                    case KeyEvent.KEYCODE_W:
+                        sendMCC("from", event); break;
+                    case KeyEvent.KEYCODE_X:
+                        sendMCC("ha", event); break;
+                    case KeyEvent.KEYCODE_Y:
+                        sendMCC("he", event); break;
+                    case KeyEvent.KEYCODE_Z:
+                        sendMCC("his", event); break;
+                    case KeyEvent.KEYCODE_0:
+                        sendMCC("in", event); break;
+                    case KeyEvent.KEYCODE_1:
+                        sendMCC("ing", event); break;
+                    case KeyEvent.KEYCODE_2:
+                        sendMCC("ion", event); break;
+                    case KeyEvent.KEYCODE_3:
+                        sendMCC("is", event); break;
+                    case KeyEvent.KEYCODE_4:
+                        sendMCC("it", event); break;
+                    case KeyEvent.KEYCODE_5:
+                        sendMCC("le", event); break;
+                    case KeyEvent.KEYCODE_6:
+                        sendMCC("nd", event); break;
+                    case KeyEvent.KEYCODE_7:
+                        sendMCC("ng", event); break;
+                    case KeyEvent.KEYCODE_8:
+                        sendMCC("not", event); break;
+                    case KeyEvent.KEYCODE_9:
+                        sendMCC("nt", event); break;
+                    case KeyEvent.KEYCODE_F1:
+                        sendMCC("oa", event); break;
+                    case KeyEvent.KEYCODE_F2:
+                        sendMCC("of", event); break;
+                    case KeyEvent.KEYCODE_F3:
+                        sendMCC("on", event); break;
+                    case KeyEvent.KEYCODE_F4:
+                        sendMCC("or", event); break;
+                    case KeyEvent.KEYCODE_F5:
+                        sendMCC("ou", event); break;
+                    case KeyEvent.KEYCODE_F6:
+                        sendMCC("ow", event); break;
+                    case KeyEvent.KEYCODE_F7:
+                        sendMCC("ph", event); break;
+                    case KeyEvent.KEYCODE_F8:
+                        sendMCC("qu", event); break;
+                    case KeyEvent.KEYCODE_F9:
+                        sendMCC("ra", event); break;
+                    case KeyEvent.KEYCODE_F10:
+                        sendMCC("re", event); break;
+                    case KeyEvent.KEYCODE_F11:
+                        sendMCC("ri", event); break;
+                    case KeyEvent.KEYCODE_F12:
+                        sendMCC("ro", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_0:
+                        sendMCC("sa", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_1:
+                        sendMCC("se", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_2:
+                        sendMCC("so", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_3:
+                        sendMCC("st", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_4:
+                        sendMCC("te", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_5:
+                        sendMCC("th", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_6:
+                        sendMCC("that", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_7:
+                        sendMCC("the", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_8:
+                        sendMCC("this", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_9:
+                        sendMCC("ti", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_DIVIDE:
+                        sendMCC("to", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_MULTIPLY:
+                        sendMCC("ve", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_SUBTRACT:
+                        sendMCC("was", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_ADD:
+                        sendMCC("wh", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_DOT:
+                        sendMCC("with", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_EQUALS:
+                        sendMCC("you", event); break;
+                    case KeyEvent.KEYCODE_NUMPAD_ENTER:
+                        sendMCC("'ll", event); break;
+                    case KeyEvent.KEYCODE_COMMA:
+                        sendMCC("'s", event); break;
+                    case KeyEvent.KEYCODE_PERIOD:
+                        sendMCC(".", event); break;
+                }              
+            }
+            // Handle all META_ALT_RIGHT_ON keys.
+            return true;
         }
         //AB
             
@@ -3250,6 +3398,21 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+    
+    public void sendMCC (String mcc, final KeyEvent event) {
+        commitTyped(LastComposedWord.NOT_A_SEPARATOR);
+        if(event.isShiftPressed()) {
+            sendKeyChar(Character.toUpperCase(mcc.charAt(0)));
+        } else {
+            sendKeyChar(mcc.charAt(0));
+        }
+
+        for (int i = 1; i < mcc.length(); i++) {
+            sendKeyChar(mcc.charAt(i));
+        }
+        //sendDownUpKeyEvents(mcc.charAt(mcc.length() - 1));
+        
     }
 
     @Override
